@@ -2,7 +2,8 @@ module.exports = {
   'env': {
     'node': true, // process not defined with browser option
     'commonjs': true,
-    'es2021': true
+    'es2021': true,
+    'jest': true
   },
   'extends': 'eslint:recommended',
   'overrides': [
