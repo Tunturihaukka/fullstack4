@@ -2,8 +2,8 @@ POST http://localhost:3001/api/blogs
 Content-Type: application/json
 
 {
-    "title": "Rooman kuninkaat",
-    "author": "Titus Livius",
-    "url": "tituslivius/aburbecondita",
+    "title": "Rooman keisarit",
+    "author": "Tacitus",
+    "url": "tacitus/roomankeisarillinenhistoria",
     "likes": "1000"
 }
