@@ -27,13 +27,36 @@ const mostBlogs = (blogs) => {
   const blogStatistics = _.entries(_.countBy(blogs, 'author'))
   const highestCount = _.maxBy(blogStatistics, _.last)
   const toObject = {
-    'author': highestCount[0],
-    'blogs': highestCount[1]
+    author: highestCount[0],
+    blogs: highestCount[1]
   }
   
   return toObject
 }
-/*
+
+// Note that a brute force solution using 'let x' is used here
+
+const mostLikes = (blogs) => {
+  const blogsByAuthor =_.groupBy(blogs, 'author')
+  let likes = []
+  for (const key in blogsByAuthor){
+    const likeSum = blogsByAuthor[key].reduce(
+      (likes, currentObj) => likes + currentObj.likes,
+      0
+    )
+    likes = likes.concat(likeSum)
+  }
+  let authors = []
+  const keys = Object.keys(blogsByAuthor)
+  for (let i = 0; i < likes.length; i++){
+    authors = authors.concat({author: keys[i], likes: likes[i]})
+  }
+
+  const highestCount = _.maxBy(authors, 'likes')
+
+  return highestCount
+}
+/* # For testing purposes
 const blogs = [
   {
     _id: '5a422a851b54a676234d17f7',
@@ -84,11 +107,12 @@ const blogs = [
     __v: 0
   }  
 ]
-logger.info('Print: ', mostBlogs(blogs))
+logger.info(mostLikes(blogs))
 */
 module.exports = {
   dummy, 
   likes,
   favouriteBlog,
-  mostBlogs
+  mostBlogs,
+  mostLikes
 }
