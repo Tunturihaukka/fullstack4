@@ -79,6 +79,26 @@ test('likes gets zero if not initialized', async () => {
 
 })
 
+test('no given title or url yields 400 Bad Request', async () => {
+  const noTitle = {
+    author: 'Euripides',
+    url: 'testurl5',
+    likes: 1
+  }
+  const noUrl = {
+    title: 'Oidipus tarinat',
+    author: 'Sofokles',
+    likes: 1
+  }
+  await api.post('/api/blogs')
+    .send(noTitle)
+    .expect(400)
+  await api.post('/api/blogs')
+    .send(noUrl)
+    .expect(400)
+
+})
+
 afterAll(async () => {
   await mongoose.connection.close()
 })
