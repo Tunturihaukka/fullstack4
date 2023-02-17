@@ -50,18 +50,33 @@ test('adding a blog works properly', async () => {
     url: 'testurl3',
     likes: 57
   }
-  const promise = await api
+  await api
     .post('/api/blogs')
     .send(newBlog)
     .expect(201)
     .expect('Content-Type', /application\/json/)
-  console.log('status: ', promise.status)
 
   const res = await api.get('/api/blogs')
 
-  const test = new Blog(newBlog)
-
   expect(res.body).toHaveLength(initialBlogs.length + 1)
+})
+
+test('likes gets zero if not initialized', async () => {
+  const newBlog = {
+    title: 'naming of Barabbas',
+    author: 'Origenes',
+    url: 'testurl4',
+  }
+  await api
+    .post('/api/blogs')
+    .send(newBlog)
+    .expect(201)
+    .expect('Content-Type', /application\/json/)
+
+  const res = await api.get('/api/blogs')
+  expect(res.body[res.body.length-1].likes).toBeDefined()
+  expect(res.body[res.body.length-1].likes).toBe(0)
+
 })
 
 afterAll(async () => {
