@@ -43,6 +43,27 @@ test('all blogs have identifying id field', async () => {
   })
 })
 
+test('adding a blog works properly', async () => {
+  const newBlog = {
+    title: 'summa theologica',
+    author: 'Tuomas Akvinolainen',
+    url: 'testurl3',
+    likes: 57
+  }
+  const promise = await api
+    .post('/api/blogs')
+    .send(newBlog)
+    .expect(201)
+    .expect('Content-Type', /application\/json/)
+  console.log('status: ', promise.status)
+
+  const res = await api.get('/api/blogs')
+
+  const test = new Blog(newBlog)
+
+  expect(res.body).toHaveLength(initialBlogs.length + 1)
+})
+
 afterAll(async () => {
   await mongoose.connection.close()
 })
