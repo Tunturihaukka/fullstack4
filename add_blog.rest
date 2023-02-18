@@ -1,9 +1,0 @@
-POST http://localhost:3001/api/blogs
-Content-Type: application/json
-
-{
-    "title": "Rooman keisarit",
-    "author": "Tacitus",
-    "url": "tacitus/roomankeisarillinenhistoria",
-    "likes": "1000"
-}
