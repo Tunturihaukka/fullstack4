@@ -58,5 +58,45 @@ describe('when there is initially one user at db', () => {
     const usersAtEnd = await helper.usersInDb()
     expect(usersAtEnd).toHaveLength(usersAtStart.length)
   })
+  test('only proper username and password is accepted', async () => {
+    const usersAtStart = await helper.usersInDb()
+    const notProperInfo = [
+      {
+        username: 'ml',
+        name: 'Matti Luukkainen',
+        password: 'salainen',
+      },
+      {
+        username: 'mluukkai1',
+        name: 'Matti Luukkainen',
+        password: 'sa',
+      },
+      {
+        name: 'Matti Luukkainen',
+        password: 'sa',
+      },
+      
+      {
+        username: 'mluukkai2',
+        name: 'Matti Luukkainen',
+      }
+    ]
+    const tryUser = async (user) => {
+      await api
+        .post('/api/users')
+        .send(user)
+        .expect(400)
+        .expect('Content-Type', /application\/json/)
+    }
+
+    for (const user of notProperInfo) {
+      await tryUser(user)
+    }
+
+    
+    const usersAtEnd = await helper.usersInDb()
+    expect(usersAtEnd).toHaveLength(usersAtStart.length)
+
+  })
 
 })
