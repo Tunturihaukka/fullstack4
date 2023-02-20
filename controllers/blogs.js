@@ -1,6 +1,9 @@
+require('express-async-error')
 const blogsRouter = require('express').Router()
 const Blog = require('../models/blog')
 const User = require('../models/user')
+const jwt = require('jsonwebtoken')
+const config = require('../utils/config')
 
   
 blogsRouter.get('/', async (request, response, next) => {
@@ -11,23 +14,38 @@ blogsRouter.get('/', async (request, response, next) => {
     next(exception)
   }
 })
+
+const getTokenFrom = request => {
+  const authorization = request.get('authorization')
+  if (authorization && authorization.toLowerCase().startsWith('bearer ')) {
+    return authorization.substring(7)
+  }
+  return null
+}
   
 blogsRouter.post('/', async (request, response, next) => {
   const body = request.body
-
-  const userData = await User.find({})
-  const user = userData[0]
-  const firstEncounteredId = user.id
-  const blogBody = {
-    title: body.title,
-    author: body.author,
-    url: body.url,
-    likes: body.likes,
-    user: firstEncounteredId
-  }
-
-  const blog = new Blog(blogBody)
   try {
+    const decodedToken = jwt.verify(getTokenFrom(request), config.SECRET)
+    console.log('tok', decodedToken)
+    if (!decodedToken.id) {
+      return response.status(401).json({ error: 'token invalid' })
+    }
+    const user = await User.findById(decodedToken.id)
+
+    //const userData = await User.find({})
+    //const user = userData[0]
+    const firstEncounteredId = user.id
+    const blogBody = {
+      title: body.title,
+      author: body.author,
+      url: body.url,
+      likes: body.likes,
+      user: firstEncounteredId
+    }
+
+    const blog = new Blog(blogBody)
+  
     const result = await blog.save()
     response.status(201).json(result)
     const userToUpdate = await User.findById(firstEncounteredId)

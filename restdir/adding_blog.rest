@@ -1,9 +1,10 @@
 POST http://localhost:3001/api/blogs
 Content-Type: application/json
+Authorization: bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VybmFtZSI6IlRhY2l0dXMzIiwiaWQiOiI2M2YzYzQ3ZGViMjgyYjMwOGNkNjgwZmYiLCJpYXQiOjE2NzY5MjExNzJ9.ZM5J8nWEapefiXTQhvpeNVy2jf5pE6T1qOZtS_-udjU
 
 {
-    "title": "Augustus112",
-    "author": "tacitus112",
-    "url": "Augustus112",
+    "title": "Caesar",
+    "author": "tacitus3",
+    "url": "caesar",
     "likes": 5
 }
