@@ -12,15 +12,13 @@ const userSchema = mongoose.Schema({
     type: String,
     required: true
   },
-  name: String
-  /*
-  notes: [
+  name: String,
+  blogs: [
     {
       type: mongoose.Schema.Types.ObjectId,
-      ref: 'Note'
+      ref: 'Blog'
     }
-  ],
-  */
+  ]
 })
 
 userSchema.plugin(uniqueValidator)
